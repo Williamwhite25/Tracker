@@ -2,61 +2,109 @@
 //  Created by William White on 12.11.2025.
 //
 
-
-
 import Foundation
 
+
+
+// MARK: - TrackerSection
+struct TrackerSection {
+    let category: TrackerCategory
+    let items: [Tracker]?
+}
+
 // MARK: - Tracker
-final class Tracker {
-    // MARK: Properties
+struct Tracker: Identifiable, Equatable {
     let id: UUID
     let name: String
-    let categoryUuid: UUID
+    let categoryId: UUID
     let schedule: [WeekDay]?
     let emoji: String
     let color: Colors
-    private(set) var completeAt: [Date]
+    let completedDates: Set<Date>
 
-    // MARK: Init
     init(
-        id: UUID,
+        id: UUID = .init(),
         name: String,
-        categoryUuid: UUID,
-        schedule: [WeekDay]?,
+        categoryId: UUID,
+        schedule: [WeekDay]? = nil,
         emoji: String,
         color: Colors,
-        completeAt: [Date] = []
+        completedDates: Set<Date> = []
     ) {
         self.id = id
         self.name = name
-        self.categoryUuid = categoryUuid
+        self.categoryId = categoryId
         self.schedule = schedule
         self.emoji = emoji
         self.color = color
-        self.completeAt = completeAt
+        self.completedDates = Set(completedDates.map { $0.startOfDay })
     }
 
-    // MARK: Completion checks & updates
     func isCompleted(on date: Date) -> Bool {
-        let day = date.startOfDay
-        return completeAt.contains { Calendar.current.isDate($0, inSameDayAs: day) }
+        completedDates.contains(date.startOfDay)
     }
 
-    @discardableResult
-    func markCompleted(on date: Date) -> Bool {
+    func markingCompleted(on date: Date) -> Tracker {
         let day = date.startOfDay
-        guard !isCompleted(on: day) else { return false }
-        completeAt.append(day)
-        return true
+        guard !completedDates.contains(day) else { return self }
+        return Tracker(
+            id: id, name: name, categoryId: categoryId,
+            schedule: schedule, emoji: emoji, color: color,
+            completedDates: completedDates.union([day])
+        )
     }
 
-    @discardableResult
-    func unmarkCompleted(on date: Date) -> Bool {
+    func unmarkingCompleted(on date: Date) -> Tracker {
         let day = date.startOfDay
-        if let idx = completeAt.firstIndex(where: { Calendar.current.isDate($0, inSameDayAs: day) }) {
-            completeAt.remove(at: idx)
-            return true
-        }
-        return false
+        let newDates = completedDates.subtracting([day])
+        return Tracker(
+            id: id, name: name, categoryId: categoryId,
+            schedule: schedule, emoji: emoji, color: color,
+            completedDates: newDates
+        )
     }
 }
+
+// Codable keys
+private extension Tracker {
+    enum CodingKeys: String, CodingKey {
+        case id, name, categoryId, schedule, emoji, color, completedDates
+    }
+}
+
+extension Tracker: Decodable {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        let id = try c.decode(UUID.self, forKey: .id)
+        let name = try c.decode(String.self, forKey: .name)
+        let categoryId = try c.decode(UUID.self, forKey: .categoryId)
+        let schedule = try c.decodeIfPresent([WeekDay].self, forKey: .schedule)
+        let emoji = try c.decode(String.self, forKey: .emoji)
+        let color = try c.decode(Colors.self, forKey: .color)
+        let dates = try c.decodeIfPresent([Date].self, forKey: .completedDates) ?? []
+        self.init(
+            id: id,
+            name: name,
+            categoryId: categoryId,
+            schedule: schedule,
+            emoji: emoji,
+            color: color,
+            completedDates: Set(dates.map { $0.startOfDay })
+        )
+    }
+}
+
+extension Tracker: Encodable {
+    func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(id, forKey: .id)
+        try c.encode(name, forKey: .name)
+        try c.encode(categoryId, forKey: .categoryId)
+        try c.encodeIfPresent(schedule, forKey: .schedule)
+        try c.encode(emoji, forKey: .emoji)
+        try c.encode(color, forKey: .color)
+        try c.encode(Array(completedDates), forKey: .completedDates)
+    }
+}
+
+

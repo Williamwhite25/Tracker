@@ -32,7 +32,6 @@ final class TrackerCell: UICollectionViewCell {
     // MARK: Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        // Добавляем дочерние вьюшки
         completionRowView.addSubview(completedLabel)
         completionRowView.addSubview(completedButtonView)
 
@@ -56,7 +55,6 @@ final class TrackerCell: UICollectionViewCell {
         card.translatesAutoresizingMaskIntoConstraints = false
         card.layer.masksToBounds = true
         card.layer.cornerRadius = 16
-        card.backgroundColor = UIColor(red: 51/255.0, green: 207/255.0, blue: 105/255.0, alpha: 1.0)
 
         // name label configure
         nameView.translatesAutoresizingMaskIntoConstraints = false
@@ -66,10 +64,13 @@ final class TrackerCell: UICollectionViewCell {
 
         // emoji label configure
         emojiView.translatesAutoresizingMaskIntoConstraints = false
-        emojiView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3)
+        emojiView.backgroundColor = UIColor(white: 1.0, alpha: 0.3)
         emojiView.layer.masksToBounds = true
         emojiView.layer.cornerRadius = 15
         emojiView.textAlignment = .center
+        emojiView.font = .systemFont(ofSize: 16)
+        emojiView.textColor = .white
+        emojiView.clipsToBounds = true
 
         // completions row configure
         completionRowView.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +79,6 @@ final class TrackerCell: UICollectionViewCell {
         completedButtonView.translatesAutoresizingMaskIntoConstraints = false
         completedButtonView.layer.masksToBounds = true
         completedButtonView.layer.cornerRadius = 17
-        completedButtonView.backgroundColor = UIColor(red: 51/255.0, green: 207/255.0, blue: 105/255.0, alpha: 1.0)
         completedButtonView.setImage(UIImage(systemName: "plus"), for: .normal)
         completedButtonView.tintColor = UIColor(named: "YPWhite")
         completedButtonView.addTarget(self, action: #selector(trackerCompletedButtonTapped(_:)), for: .touchUpInside)
@@ -90,30 +90,34 @@ final class TrackerCell: UICollectionViewCell {
 
     // MARK: Configuration
     func setCompletedButton(isCompleted: Bool) {
-        // Устанавливаем иконку в кнопке в зависимости от состояния
         let imageName = isCompleted ? "checkmark" : "plus"
         completedButtonView.setImage(UIImage(systemName: imageName), for: .normal)
     }
 
     func setupForTracking(tracker: Tracker, selectedDate: Date) {
-        // Конфигурируем ячейку под переданный трекер
         self.tracker = tracker
         nameView.text = tracker.name
         emojiView.text = tracker.emoji
+
+        // apply tracker color to card and button background
+        let uiColor = tracker.color.uiColor
+        card.backgroundColor = uiColor
+        completedButtonView.backgroundColor = uiColor
+
         updateCountLabel()
         setCompletedButton(isCompleted: tracker.isCompleted(on: selectedDate))
     }
 
     // MARK: Actions
     @objc private func trackerCompletedButtonTapped(_ sender: UIButton) {
-        // Нотификация делегата о нажатии 
         delegate?.trackerCellDidTapPlus(self)
         UISelectionFeedbackGenerator().selectionChanged()
     }
 
     // MARK: Helpers
     func updateCountLabel() {
-        completedLabel.text = (tracker?.completeAt.count ?? 0).toStringChoice("день", "дня", "дней")
+        let count = tracker?.completedDates.count ?? 0
+        completedLabel.text = count.toStringChoice("день", "дня", "дней")
     }
 
     // MARK: Layout
@@ -151,10 +155,13 @@ final class TrackerCell: UICollectionViewCell {
             // completed button constraints
             completedButtonView.trailingAnchor.constraint(equalTo: completionRowView.trailingAnchor, constant: -12),
             completedButtonView.widthAnchor.constraint(equalToConstant: 34),
-            completedButtonView.heightAnchor.constraint(equalToConstant: 34)
+            completedButtonView.heightAnchor.constraint(equalToConstant: 34),
+            completedButtonView.centerYAnchor.constraint(equalTo: completionRowView.centerYAnchor)
         ])
     }
 }
+
+
 
 
 

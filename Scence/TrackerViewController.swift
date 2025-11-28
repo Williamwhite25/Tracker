@@ -3,13 +3,12 @@
 //
 
 
-
 import Foundation
 import UIKit
 
+
 // MARK: - TrackerViewController extensions: Presenter, Search, Date handling
 extension TrackerViewController: TrackerPresenterProtocol, UISearchBarDelegate, UISearchControllerDelegate {
-    // Обработчик изменений текста в поисковой строке фильтрует трекеры по названию
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         let itemsFilter = items.filter { tracker in
             tracker.name.lowercased().contains(searchText.lowercased())
@@ -25,7 +24,6 @@ extension TrackerViewController: TrackerPresenterProtocol, UISearchBarDelegate, 
         collectionTracker?.showEmptyDataView(visible: resultSections.isEmpty)
     }
 
-    // Обработчик изменения даты в DatePicker фильтрует трекеры по расписанию
     @objc func changeDate(sender: UIDatePicker) {
         selectedDate = sender.date
 
@@ -34,7 +32,6 @@ extension TrackerViewController: TrackerPresenterProtocol, UISearchBarDelegate, 
         guard let selectedWeekDay = WeekDay(calendarWeekday: weekdayNumber) else { return }
 
         let filtered = items.filter { tracker in
-            // если расписание отсутствует считаем трекер подходящим
             guard let schedule = tracker.schedule else { return true }
             return schedule.contains(where: { $0 == selectedWeekDay })
         }
@@ -47,7 +44,6 @@ extension TrackerViewController: TrackerPresenterProtocol, UISearchBarDelegate, 
 
 // MARK: - CreateTrackerDelegate
 extension TrackerViewController: CreateTrackerDelegate {
-    // Делегат получения созданного трекера — добавляем в список и обновляем UI
     func createTrackerDidCreate(_ tracker: Tracker) {
         items.append(tracker)
         sections = willCollectSections(categories: categories, trackers: items)
@@ -57,9 +53,8 @@ extension TrackerViewController: CreateTrackerDelegate {
     }
 }
 
-// MARK: - UICollectionViewDelegateFlowLayout (layout configuration)
+// MARK: - UICollectionViewDelegateFlowLayout
 extension TrackerViewController: UICollectionViewDelegateFlowLayout {
-    // Отступы для секции
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -69,7 +64,6 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
         return UIEdgeInsets(top: xySize, left: xySize, bottom: xySize, right: xySize)
     }
 
-    // Размер ячейки
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -82,12 +76,10 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - UICollectionViewDataSource
 extension TrackerViewController: UICollectionViewDataSource {
-    // Количество секций
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
         resultSections.count
     }
 
-    // Размер заголовка секции
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -96,7 +88,6 @@ extension TrackerViewController: UICollectionViewDataSource {
         CGSize(width: collectionView.frame.size.width, height: 50.0)
     }
 
-    // Представление заголовка секции
     public func collectionView(
         _ collectionView: UICollectionView,
         viewForSupplementaryElementOfKind kind: String,
@@ -114,19 +105,16 @@ extension TrackerViewController: UICollectionViewDataSource {
 
             guard let header else { return UICollectionReusableView() }
             header.setTitle(title: section.category.name)
-
             return header
         default:
             fatalError("collectionView(_:viewForSupplementaryElementOfKind:at:) has not been implemented")
         }
     }
 
-    // Количество элементов в секции
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         resultSections[section].items?.count ?? 0
     }
 
-    // Конфигурация ячейки
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
@@ -152,79 +140,85 @@ extension TrackerViewController: UICollectionViewDataSource {
 
 // MARK: - TrackerCellDelegate (plus button handling)
 extension TrackerViewController: TrackerCellDelegate {
-    // Обработка нажатия + в ячейке: снимаем выполнение трекера
     func trackerCellDidTapPlus(_ cell: TrackerCell) {
         guard let indexPath = collectionTracker?.collection.indexPath(for: cell) else { return }
         guard let tracker = resultSections[indexPath.section].items?[indexPath.row] else { return }
 
         let now = Date()
-
-        // Нельзя отмечать будущую дату
         if selectedDate.startOfDay > now.startOfDay { return }
 
         let wasCompleted = tracker.isCompleted(on: selectedDate)
 
         if wasCompleted {
-            // Снятие отметки выполнено
-            let removed = tracker.unmarkCompleted(on: selectedDate)
-            if removed {
-                if let visibleCell = collectionTracker?.collection.cellForItem(at: indexPath) as? TrackerCell {
-                    visibleCell.updateCountLabel()
-                    visibleCell.setCompletedButton(isCompleted: false)
-                } else {
-                    collectionTracker?.collection.reloadItems(at: [indexPath])
-                }
+            let updated = tracker.unmarkingCompleted(on: selectedDate)
+            replaceTracker(updated)
+            if let visibleCell = collectionTracker?.collection.cellForItem(at: indexPath) as? TrackerCell {
+                visibleCell.updateCountLabel()
+                visibleCell.setCompletedButton(isCompleted: false)
+            } else {
+                collectionTracker?.collection.reloadItems(at: [indexPath])
             }
         } else {
-            // Установка отметки выполнено
-            let added = tracker.markCompleted(on: selectedDate)
-            if added {
-                if let visibleCell = collectionTracker?.collection.cellForItem(at: indexPath) as? TrackerCell {
-                    visibleCell.updateCountLabel()
-                    visibleCell.setCompletedButton(isCompleted: true)
-                } else {
-                    collectionTracker?.collection.reloadItems(at: [indexPath])
+            let updated = tracker.markingCompleted(on: selectedDate)
+            replaceTracker(updated)
+            if let visibleCell = collectionTracker?.collection.cellForItem(at: indexPath) as? TrackerCell {
+                visibleCell.updateCountLabel()
+                visibleCell.setCompletedButton(isCompleted: true)
+            } else {
+                collectionTracker?.collection.reloadItems(at: [indexPath])
+            }
+        }
+    }
+
+    // replace tracker in storage arrays
+    private func replaceTracker(_ updated: Tracker) {
+        // replace in items
+        if let idx = items.firstIndex(where: { $0.id == updated.id }) {
+            items[idx] = updated
+        }
+
+        // replace in sections and resultSections
+        func replaceIn(_ sectionsArray: inout [TrackerSection]) {
+            for sIndex in sectionsArray.indices {
+                guard var list = sectionsArray[sIndex].items else { continue }
+                if let tIndex = list.firstIndex(where: { $0.id == updated.id }) {
+                    list[tIndex] = updated
+                    sectionsArray[sIndex] = TrackerSection(category: sectionsArray[sIndex].category, items: list)
                 }
             }
         }
+
+        replaceIn(&sections)
+        replaceIn(&resultSections)
     }
 }
 
 // MARK: - TrackerViewController main implementation
 class TrackerViewController: UIViewController {
-    // Количество колонок и отступы
     private let perRow: CGFloat = 2
     private let marginsBetweenCells: CGFloat = 10
     private var collectionTracker: CollectionTracker?
 
-    // Примеры категорий
+    // Category must have `id: UUID`
     private var categories = [
-        Category(uuid: UUID(), name: "Домашний уют")
+        TrackerCategory(id: UUID(), name: "Домашний уют")
     ]
 
-    // Секции и результаты (после фильтрации)
-    private var sections: [CollectionSection] = []
-    private var resultSections: [CollectionSection] = []
-
-    // Список трекеров
+    private var sections: [TrackerSection] = []
+    private var resultSections: [TrackerSection] = []
     private var items: [Tracker] = []
-
-    // Выбранная дата для фильтрации
     private var selectedDate: Date = Date()
 
-    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = tabBarItem.title
 
-        // Регистрация и настройка DatePicker
         let datePicker = DatePickerController(presenter: self).register()
         datePicker.picker.addTarget(self, action: #selector(changeDate(sender:)), for: .valueChanged)
         selectedDate = datePicker.picker.date
 
-        // Кнопка создания трекера, поисковик и коллекция
         CreateTrackerButton(presenter: self).registerAsLeftButton()
         SearchController(presenter: self).register()
         collectionTracker = CollectionTracker(presenter: self).register()
@@ -245,21 +239,17 @@ class TrackerViewController: UIViewController {
         }
     }
 
-    // MARK: Data helpers
-    // Генерация тестовых трекеров
     private func fetchData() -> [Tracker] {
         (0..<1).compactMap { _ in randomTracker(categories: categories) }
     }
 
-    // Группировка трекеров по категориям и формирование секций
-    private func willCollectSections(categories: [Category], trackers: [Tracker]) -> [CollectionSection] {
-        let groupTrackers = Dictionary(grouping: trackers, by: { $0.categoryUuid })
+    private func willCollectSections(categories: [TrackerCategory], trackers: [Tracker]) -> [TrackerSection] {
+        let groupTrackers = Dictionary(grouping: trackers, by: { $0.categoryId })
 
-        var collection: [CollectionSection] = []
-        groupTrackers.forEach { (categoryUuid: UUID, trackers: [Tracker]) in
-            let category = categories.first { $0.uuid == categoryUuid }
-            if let category = category {
-                collection.append(CollectionSection(category: category, items: trackers))
+        var collection: [TrackerSection] = []
+        groupTrackers.forEach { (categoryId: UUID, trackers: [Tracker]) in
+            if let category = categories.first(where: { $0.id == categoryId }) {
+                collection.append(TrackerSection(category: category, items: trackers))
             }
         }
 
@@ -270,26 +260,21 @@ class TrackerViewController: UIViewController {
         return collection
     }
 
-    // Создание случайного трекера 
-    private func randomTracker(categories: [Category]) -> Tracker? {
-        let names = [
-            "Поливать растения"
-        ].shuffled()
-
-        guard let uuid = categories.first?.uuid else { return nil }
+    private func randomTracker(categories: [TrackerCategory]) -> Tracker? {
+        let names = ["Поливать растения"].shuffled()
+        guard let id = categories.first?.id else { return nil }
 
         return Tracker(
             id: UUID(),
             name: names[0],
-            categoryUuid: uuid,
+            categoryId: id,
             schedule: nil,
             emoji: "🌼",
-            color: Colors.allCases.randomElement() ?? .blue,
-            completeAt: []
+            color: .green,    
+            completedDates: Set()
         )
     }
 
-    // MARK: Tab bar item
     override var tabBarItem: UITabBarItem! {
         get {
             UITabBarItem(
@@ -301,6 +286,7 @@ class TrackerViewController: UIViewController {
         set { super.tabBarItem = newValue }
     }
 }
+
 
 
 

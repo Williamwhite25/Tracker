@@ -5,19 +5,21 @@
 
 import Foundation
 
-
-struct TrackerRecord: Equatable {
+// MARK: - TrackerRecord
+struct TrackerRecord: Identifiable, Codable, Equatable {
     let id: UUID
-    let trackerID: UUID
+    let trackerId: UUID
     let date: Date
 
-    init(id: UUID = UUID(), trackerID: UUID, date: Date) {
+    init(id: UUID = .init(), trackerId: UUID, date: Date) {
         self.id = id
-        self.trackerID = trackerID
+        self.trackerId = trackerId
         self.date = date.startOfDay
     }
 
     static func == (lhs: TrackerRecord, rhs: TrackerRecord) -> Bool {
-        return lhs.trackerID == rhs.trackerID && lhs.date == rhs.date
+        lhs.trackerId == rhs.trackerId && lhs.date == rhs.date
     }
 }
+
+

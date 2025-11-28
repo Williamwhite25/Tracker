@@ -238,11 +238,11 @@ final class CreateTrackerViewController: UIViewController {
         let tracker = Tracker(
             id: UUID(),
             name: name,
-            categoryUuid: defaultCategoryUuid,
+            categoryId: defaultCategoryUuid,
             schedule: selectedScheduleDays.isEmpty ? nil : selectedScheduleDays,
             emoji: "⭐",
             color: defaultColor,
-            completeAt: []
+            completedDates: Set<Date>()
         )
 
         delegate?.createTrackerDidCreate(tracker)
@@ -260,7 +260,7 @@ extension CreateTrackerViewController: ScheduleViewControllerDelegate {
     func scheduleViewController(_ vc: ScheduleViewController, didSelectDays selectedDays: [WeekDay]) {
         selectedScheduleDays = selectedDays
 
-        // Обновление заголовка кнопки расписания, показываем выбранные дни или исходный текст
+        // Обновление заголовка кнопки расписания, показываем выбранные дни 
         if selectedDays.isEmpty {
             var config = scheduleButton.configuration ?? UIButton.Configuration.plain()
             config.title = "Расписание"
