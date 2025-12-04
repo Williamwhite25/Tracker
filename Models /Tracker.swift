@@ -21,7 +21,7 @@ struct Tracker: Identifiable, Equatable {
     let emoji: String
     let color: Colors
     let completedDates: Set<Date>
-
+    
     init(
         id: UUID = .init(),
         name: String,
@@ -39,11 +39,11 @@ struct Tracker: Identifiable, Equatable {
         self.color = color
         self.completedDates = Set(completedDates.map { $0.startOfDay })
     }
-
+    
     func isCompleted(on date: Date) -> Bool {
         completedDates.contains(date.startOfDay)
     }
-
+    
     func markingCompleted(on date: Date) -> Tracker {
         let day = date.startOfDay
         guard !completedDates.contains(day) else { return self }
@@ -53,7 +53,7 @@ struct Tracker: Identifiable, Equatable {
             completedDates: completedDates.union([day])
         )
     }
-
+    
     func unmarkingCompleted(on date: Date) -> Tracker {
         let day = date.startOfDay
         let newDates = completedDates.subtracting([day])
@@ -65,7 +65,7 @@ struct Tracker: Identifiable, Equatable {
     }
 }
 
-// Codable keys
+
 private extension Tracker {
     enum CodingKeys: String, CodingKey {
         case id, name, categoryId, schedule, emoji, color, completedDates

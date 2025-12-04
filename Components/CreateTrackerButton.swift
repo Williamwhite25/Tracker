@@ -8,16 +8,15 @@ import UIKit
 
 // MARK: - CreateTrackerButton
 final class CreateTrackerButton: UIBarButtonItem {
-    // Presenter to present CreateTracker flow
     private let presenter: UIViewController
-
-    // Always plain style
+    
+    
     override var style: Style {
         get { .plain }
         set {}
     }
-
-    // Custom plus image with tint
+    
+   
     override var image: UIImage? {
         get {
             let config = UIImage.SymbolConfiguration(weight: .semibold)
@@ -27,7 +26,7 @@ final class CreateTrackerButton: UIBarButtonItem {
         }
         set { super.image = newValue }
     }
-
+    
     // MARK: Init
     init(presenter: UIViewController) {
         self.presenter = presenter
@@ -35,16 +34,16 @@ final class CreateTrackerButton: UIBarButtonItem {
         target = self
         action = #selector(tapAction)
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    // Set as left bar button on presenter's navigation item
+    
+    
     func registerAsLeftButton() {
         presenter.navigationItem.leftBarButtonItem = self
     }
-
+    
     // MARK: - Action
     @objc private func tapAction() {
         let createVC = CreateTrackerViewController()
