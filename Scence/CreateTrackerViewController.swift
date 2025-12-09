@@ -157,7 +157,7 @@ final class CreateTrackerViewController: UIViewController {
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 6
         layout.minimumLineSpacing = 3
-        layout.sectionInset = UIEdgeInsets(top: 8, left: 18, bottom: 8, right: 18)
+        layout.sectionInset = UIEdgeInsets(top: 4, left: 18, bottom: 4, right: 18)
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.backgroundColor = .clear
@@ -262,7 +262,7 @@ final class CreateTrackerViewController: UIViewController {
         // Emoji: 6 колонок, высота строки 40
         if let layout = emojiCollection.collectionViewLayout as? UICollectionViewFlowLayout {
             let columns: CGFloat = 6
-            let itemHeight: CGFloat = 40
+            let itemHeight: CGFloat = 52
             let rows = ceil(CGFloat(emojis.count) / columns)
             let totalHeight = rows * itemHeight
                 + max(0, rows - 1) * layout.minimumLineSpacing
@@ -270,14 +270,15 @@ final class CreateTrackerViewController: UIViewController {
             emojiCollectionHeightConstraint?.constant = totalHeight
         }
 
-        
+        // Color collection: учитываем contentInset
         if let layout = colorCollection.collectionViewLayout as? UICollectionViewFlowLayout {
             let columns: CGFloat = 6
             let totalInteritemSpacing = layout.minimumInteritemSpacing * (columns - 1)
             let horizontalInsets = layout.sectionInset.left + layout.sectionInset.right
-            let availableWidth = colorCollection.bounds.width - totalInteritemSpacing - horizontalInsets
+            let contentInsets = colorCollection.contentInset.left + colorCollection.contentInset.right
+            let availableWidth = colorCollection.bounds.width - totalInteritemSpacing - horizontalInsets - contentInsets
             let calculatedSide = floor(availableWidth / columns)
-            let itemSide = min(calculatedSide, 40) 
+            let itemSide = min(calculatedSide, 52)
 
             let rows: CGFloat = 3
             let totalHeight = rows * itemSide
@@ -325,25 +326,23 @@ final class CreateTrackerViewController: UIViewController {
             scheduleSummaryLabel.bottomAnchor.constraint(lessThanOrEqualTo: categoryScheduleContainer.bottomAnchor, constant: -8),
 
             // Emoji title
-            emojiTitleLabel.topAnchor.constraint(equalTo: categoryScheduleContainer.bottomAnchor, constant: 24),
+            emojiTitleLabel.topAnchor.constraint(equalTo: categoryScheduleContainer.bottomAnchor, constant: 16),
             emojiTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
             emojiTitleLabel.heightAnchor.constraint(equalToConstant: 18),
 
-            
-            emojiCollection.topAnchor.constraint(equalTo: emojiTitleLabel.bottomAnchor, constant: 12),
+            emojiCollection.topAnchor.constraint(equalTo: emojiTitleLabel.bottomAnchor, constant: 4), // Было 8
             emojiCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
             emojiCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
 
             // Color title
-            colorTitleLabel.topAnchor.constraint(equalTo: emojiCollection.bottomAnchor, constant: 16),
+            colorTitleLabel.topAnchor.constraint(equalTo: emojiCollection.bottomAnchor, constant: 4),
             colorTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
             colorTitleLabel.heightAnchor.constraint(equalToConstant: 18),
 
-            // Color collection — flexible height, нижняя граница не должна пересекаться с кнопками
-            colorCollection.topAnchor.constraint(equalTo: colorTitleLabel.bottomAnchor, constant: 8),
+            // Color collection
+            colorCollection.topAnchor.constraint(equalTo: colorTitleLabel.bottomAnchor, constant: 4),
             colorCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
             colorCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
-            colorCollection.bottomAnchor.constraint(lessThanOrEqualTo: createButton.topAnchor, constant: -16),
 
             // Buttons
             createButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -34),
@@ -499,26 +498,28 @@ extension CreateTrackerViewController: UICollectionViewDataSource, UICollectionV
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == emojiCollection {
             guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
-                return CGSize(width: 40, height: 40)
+                return CGSize(width: 30, height: 30)
             }
             let columns: CGFloat = 6
             let totalInteritemSpacing = layout.minimumInteritemSpacing * (columns - 1)
             let horizontalInsets = layout.sectionInset.left + layout.sectionInset.right
-            let availableWidth = collectionView.bounds.width - totalInteritemSpacing - horizontalInsets
+            let contentInsets = collectionView.contentInset.left + collectionView.contentInset.right
+            let availableWidth = collectionView.bounds.width - totalInteritemSpacing - horizontalInsets - contentInsets
             let w = floor(availableWidth / columns)
-            return CGSize(width: w, height: 40)
-        } else { 
+            return CGSize(width: w, height: 30)
+        } else {
             guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
-                return CGSize(width: 40, height: 40)
+                return CGSize(width: 45, height: 45)
             }
             let columns: CGFloat = 6
             let totalInteritemSpacing = layout.minimumInteritemSpacing * (columns - 1)
             let horizontalInsets = layout.sectionInset.left + layout.sectionInset.right
-            let availableWidth = collectionView.bounds.width - totalInteritemSpacing - horizontalInsets
+            let contentInsets = collectionView.contentInset.left + collectionView.contentInset.right
+            let availableWidth = collectionView.bounds.width - totalInteritemSpacing - horizontalInsets - contentInsets
             let calculatedSide = floor(availableWidth / columns)
 
-            // Ограничиваем максимальный размер цветной ячейки до 40
-            let maxSide: CGFloat = 40
+           
+            let maxSide: CGFloat = 45
             let itemSide = min(calculatedSide, maxSide)
             return CGSize(width: itemSide, height: itemSide)
         }
