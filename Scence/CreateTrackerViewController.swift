@@ -259,7 +259,7 @@ final class CreateTrackerViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        // Emoji: 6 колонок, высота строки 40
+        
         if let layout = emojiCollection.collectionViewLayout as? UICollectionViewFlowLayout {
             let columns: CGFloat = 6
             let itemHeight: CGFloat = 52
@@ -498,7 +498,7 @@ extension CreateTrackerViewController: UICollectionViewDataSource, UICollectionV
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == emojiCollection {
             guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
-                return CGSize(width: 30, height: 30)
+                return CGSize(width: 40, height: 40)
             }
             let columns: CGFloat = 6
             let totalInteritemSpacing = layout.minimumInteritemSpacing * (columns - 1)
@@ -506,10 +506,10 @@ extension CreateTrackerViewController: UICollectionViewDataSource, UICollectionV
             let contentInsets = collectionView.contentInset.left + collectionView.contentInset.right
             let availableWidth = collectionView.bounds.width - totalInteritemSpacing - horizontalInsets - contentInsets
             let w = floor(availableWidth / columns)
-            return CGSize(width: w, height: 30)
+            return CGSize(width: w, height: 40)
         } else {
             guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
-                return CGSize(width: 45, height: 45)
+                return CGSize(width: 52, height: 52)
             }
             let columns: CGFloat = 6
             let totalInteritemSpacing = layout.minimumInteritemSpacing * (columns - 1)
@@ -519,7 +519,7 @@ extension CreateTrackerViewController: UICollectionViewDataSource, UICollectionV
             let calculatedSide = floor(availableWidth / columns)
 
            
-            let maxSide: CGFloat = 45
+            let maxSide: CGFloat = 52
             let itemSide = min(calculatedSide, maxSide)
             return CGSize(width: itemSide, height: itemSide)
         }
@@ -528,7 +528,7 @@ extension CreateTrackerViewController: UICollectionViewDataSource, UICollectionV
 
 
 
-
+// на всякий случай 
 
 //// MARK: - CreateTrackerDelegate
 //protocol CreateTrackerDelegate: AnyObject {

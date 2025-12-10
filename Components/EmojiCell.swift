@@ -9,7 +9,7 @@ final class EmojiCell: UICollectionViewCell {
     private let emojiLabel: UILabel = {
         let l = UILabel()
         l.translatesAutoresizingMaskIntoConstraints = false
-        l.font = UIFont.systemFont(ofSize: 24)
+        l.font = UIFont.systemFont(ofSize: 40)
         l.textAlignment = .center
         return l
     }()
