@@ -1,6 +1,7 @@
 
 
 import UIKit
+import CoreData
 
 // MARK: - ScheduleViewControllerDelegate
 protocol ScheduleViewControllerDelegate: AnyObject {

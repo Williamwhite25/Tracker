@@ -1,12 +1,4 @@
-
-//  Created by William White on 12.11.2025.
-//
-
-
 import Foundation
-import UIKit
-
-
 
 // MARK: - TrackerCategory
 struct TrackerCategory: Identifiable, Codable, Equatable {

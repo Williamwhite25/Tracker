@@ -5,6 +5,7 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 
 // MARK: - TrackerViewController extensions: Presenter, Search, Date handling
@@ -332,6 +333,8 @@ class TrackerViewController: UIViewController {
         }
         set { super.tabBarItem = newValue }
     }
+    
+    
 }
 
 
