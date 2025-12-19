@@ -1,7 +1,3 @@
-
-
-
-import Foundation
 import UIKit
 
 enum Colors: Int, CaseIterable, Codable {
@@ -34,4 +30,28 @@ enum Colors: Int, CaseIterable, Codable {
     }
 }
 
+extension Colors: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .pinkEnergy: return "pinkEnergy"
+        case .orange: return "orange"
+        case .blue: return "blue"
+        case .purple: return "purple"
+        case .green: return "green"
+        case .softPurple: return "softPurple"
+        case .pinkCosmos: return "pinkCosmos"
+        case .blueSky: return "blueSky"
+        case .seaBreeze: return "seaBreeze"
+        case .darkBlue: return "darkBlue"
+        case .tomato: return "tomato"
+        case .pink: return "pink"
+        case .peach: return "peach"
+        case .blueViolet: return "blueViolet"
+        case .violet: return "violet"
+        case .purpleViolet: return "purpleViolet"
+        case .purpleMania: return "purpleMania"
+        case .limeGreen: return "limeGreen"
+        }
+    }
+}
 

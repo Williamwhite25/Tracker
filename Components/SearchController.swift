@@ -6,6 +6,7 @@
 import Foundation
 import UIKit
 
+
 // MARK: - Default initialize
 
 final class SearchController: NSObject {

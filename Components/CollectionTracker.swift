@@ -6,6 +6,7 @@
 import Foundation
 import UIKit
 
+
 // MARK: - CollectionTracker: empty data view helper
 extension CollectionTracker {
     func showEmptyDataView(visible: Bool) {

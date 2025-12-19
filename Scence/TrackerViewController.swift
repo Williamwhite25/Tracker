@@ -7,6 +7,7 @@ import Foundation
 import UIKit
 
 
+
 // MARK: - TrackerViewController extensions: Presenter, Search, Date handling
 extension TrackerViewController: TrackerPresenterProtocol, UISearchBarDelegate, UISearchControllerDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -332,6 +333,8 @@ class TrackerViewController: UIViewController {
         }
         set { super.tabBarItem = newValue }
     }
+    
+    
 }
 
 

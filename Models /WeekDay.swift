@@ -1,14 +1,8 @@
-
-//  Created by William White on 12.11.2025.
-//
-
-
 import Foundation
 
 enum WeekDay: Int, CaseIterable, Codable, Hashable {
     case monday = 1, tuesday, wednesday, thursday, friday, saturday, sunday
-    
-    
+
     var displayName: String {
         switch self {
         case .monday:    return "Понедельник"
@@ -20,7 +14,6 @@ enum WeekDay: Int, CaseIterable, Codable, Hashable {
         case .sunday:    return "Воскресенье"
         }
     }
-    
     
     var shortName: String {
         switch self {

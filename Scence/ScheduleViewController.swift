@@ -1,6 +1,5 @@
-
-
 import UIKit
+
 
 // MARK: - ScheduleViewControllerDelegate
 protocol ScheduleViewControllerDelegate: AnyObject {
@@ -16,13 +15,24 @@ final class ScheduleViewController: UIViewController {
     private var selected: [Bool]
     
     
+    private let titleLabel: UILabel = {
+        let l = UILabel()
+        l.text = "Расписание"
+        l.font = .systemFont(ofSize: 16)
+        l.translatesAutoresizingMaskIntoConstraints = false
+        return l
+        
+    }()
+    
     private let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tv.isScrollEnabled = false
-        tv.backgroundColor = UIColor(named: "YPBackground") ?? UIColor.systemGray6.withAlphaComponent(0.8)
-        tv.separatorStyle = .none
+        tv.rowHeight = 75
+        tv.backgroundColor = UIColor(red: 0.902, green: 0.910, blue: 0.922, alpha: 0.302)
+        tv.separatorStyle = .singleLine
+        tv.separatorInset = .init(top: 0, left: 16, bottom: 0, right: 16)
         tv.layer.cornerRadius = 16
         tv.layer.masksToBounds = true
         return tv
@@ -30,16 +40,15 @@ final class ScheduleViewController: UIViewController {
     
     
     private let doneButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-        config.title = "Готово"
-        config.baseBackgroundColor = UIColor(named: "YPBlack") ?? .black
-        config.baseForegroundColor = UIColor(named: "YPWhite") ?? .white
-        config.contentInsets = NSDirectionalEdgeInsets(top: 19, leading: 32, bottom: 19, trailing: 32)
-        config.background.cornerRadius = 16
+        var config = UIButton(type: .system)
+        config.setTitle("Готово", for: .normal)
+        config.backgroundColor = .ypBlack
+        config.setTitleColor(.ypWhite, for: .normal)
+        config.titleLabel?.font = .systemFont(ofSize: 16)
+        config.layer.cornerRadius = 16
         
-        let b = UIButton(configuration: config)
-        b.translatesAutoresizingMaskIntoConstraints = false
-        return b
+        config.translatesAutoresizingMaskIntoConstraints = false
+        return config
     }()
     
     private var didLayoutOnce = false
@@ -59,16 +68,15 @@ final class ScheduleViewController: UIViewController {
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        title = "Расписание"
+        view.backgroundColor = .ypWhite
         
+        view.addSubview(titleLabel)
         view.addSubview(tableView)
         view.addSubview(doneButton)
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.rowHeight = 75
-        tableView.estimatedRowHeight = 75
+        //        tableView.estimatedRowHeight = 75
         
         
         doneButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
@@ -87,15 +95,18 @@ final class ScheduleViewController: UIViewController {
     // MARK: Layout
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+            
+            tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             tableView.heightAnchor.constraint(equalToConstant: 525),
             
-            doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            doneButton.heightAnchor.constraint(equalToConstant: 60),
-            doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
+            doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            doneButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            doneButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            doneButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
     
@@ -120,7 +131,7 @@ extension ScheduleViewController: UITableViewDataSource {
         
         var content = cell.defaultContentConfiguration()
         content.text = day.displayName
-        content.textProperties.font = UIFont.systemFont(ofSize: 16)
+        content.textProperties.font = UIFont.systemFont(ofSize: 17)
         content.textProperties.color = .label
         cell.contentConfiguration = content
         
@@ -146,7 +157,7 @@ extension ScheduleViewController: UITableViewDataSource {
             cell.contentView.addSubview(divider)
             
             NSLayoutConstraint.activate([
-              
+                
                 divider.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 16),
                 divider.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -16),
                 divider.heightAnchor.constraint(equalToConstant: 0.5),
@@ -154,6 +165,12 @@ extension ScheduleViewController: UITableViewDataSource {
             ])
             
             divider.isHidden = (indexPath.row == weekdays.count - 1)
+        }
+        
+        if indexPath.row == weekdays.count - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: .greatestFiniteMagnitude)
+        } else {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         }
         
         return cell

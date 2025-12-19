@@ -1,10 +1,4 @@
-
-//  Created by William White on 12.11.2025.
-//
-
 import Foundation
-
-
 
 // MARK: - TrackerSection
 struct TrackerSection {
@@ -107,4 +101,37 @@ extension Tracker: Encodable {
     }
 }
 
+extension Tracker {
+    
+    var isIrregularEvent: Bool {
+        return schedule?.isEmpty ?? true
+    }
 
+    func serializeSchedule() -> String? {
+        guard let schedule = schedule else { return nil }
+        let intArray = schedule.map { String($0.rawValue) }
+        return intArray.joined(separator: ",")
+    }
+    
+    static func deserializeSchedule(from string: String?) -> [WeekDay]? {
+        guard let string = string else { return nil }
+        let intArray = string.split(separator: ",").compactMap { Int($0) }
+        return intArray.compactMap { WeekDay(rawValue: $0) }
+    }
+}
+
+extension TrackerCoreData {
+    var colorValue: Colors {
+        get {
+            guard let colorString = color,
+                  let rawValue = Int(colorString),
+                  let color = Colors(rawValue: rawValue) else {
+                return .seaBreeze // fallback
+            }
+            return color
+        }
+        set {
+            color = String(newValue.rawValue)
+        }
+    }
+}
