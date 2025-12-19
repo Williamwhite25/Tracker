@@ -1,7 +1,5 @@
-
-
 import Foundation
-import CoreData
+
 
 struct CollectionSection {
     let category: Category

@@ -5,7 +5,7 @@
 
 import Foundation
 import UIKit
-import CoreData
+
 
 // MARK: - CollectionTracker: empty data view helper
 extension CollectionTracker {

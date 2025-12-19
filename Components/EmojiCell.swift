@@ -1,6 +1,3 @@
-
-
-
 import UIKit
 
 final class EmojiCell: UICollectionViewCell {

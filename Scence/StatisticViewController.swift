@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-import CoreData
+
 
 // MARK: - StatisticViewController
 class StatisticViewController: UIViewController {

@@ -106,14 +106,30 @@
 		FE9B08842EEAA18F0054398A /* CoreDate */ = {
 			isa = PBXGroup;
 			children = (
+				FE9B0B1E2EEFF12F0054398A /* Model */,
+				FE9B0B1D2EEFF0D80054398A /* Stores */,
 				0E1777822EEE9D61009CC0A8 /* CoreDataMain.swift */,
-				0E1777832EEE9D61009CC0A8 /* TrackerRecordStore.swift */,
-				0E1777842EEE9D61009CC0A8 /* TrackerCategoryStore.swift */,
-				0E1777852EEE9D61009CC0A8 /* TrackerStore.swift */,
 				FE9B08852EED73470054398A /* PersistentContainer.swift */,
-				FE9B087E2EEA99C10054398A /* Model.xcdatamodeld */,
 			);
 			path = CoreDate;
+			sourceTree = "<group>";
+		};
+		FE9B0B1D2EEFF0D80054398A /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+				0E1777852EEE9D61009CC0A8 /* TrackerStore.swift */,
+				0E1777832EEE9D61009CC0A8 /* TrackerRecordStore.swift */,
+				0E1777842EEE9D61009CC0A8 /* TrackerCategoryStore.swift */,
+			);
+			path = Stores;
+			sourceTree = "<group>";
+		};
+		FE9B0B1E2EEFF12F0054398A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				FE9B087E2EEA99C10054398A /* Model.xcdatamodeld */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		FEF8FDB12EB771EB00BB20F8 = {
