@@ -1,11 +1,17 @@
 import UIKit
 
+// MARK: - OnboardingViewController
 final class OnboardingViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+    
+    // MARK: - Private Properties
     private let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
     private let pageCheck = UIPageControl()
     private var pages: [OnboardingPageViewController] = []
+    
+    // MARK: - Public Properties
     var onFinishTap: (() -> Void)?
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,6 +34,7 @@ final class OnboardingViewController: UIViewController, UIPageViewControllerData
 
         pages = [pageOne, pageSecond]
 
+        // Настройка PageViewController
         addChild(pageViewController)
         view.addSubview(pageViewController.view)
         pageViewController.didMove(toParent: self)
@@ -36,6 +43,8 @@ final class OnboardingViewController: UIViewController, UIPageViewControllerData
         pageViewController.setViewControllers([pages[0]], direction: .forward, animated: false)
 
         pageViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Установка constraints для PageViewController
         NSLayoutConstraint.activate([
             pageViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
             pageViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -43,18 +52,21 @@ final class OnboardingViewController: UIViewController, UIPageViewControllerData
             pageViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
+        // Настройка PageControl
         pageCheck.numberOfPages = pages.count
         pageCheck.currentPage = 0
         pageCheck.isUserInteractionEnabled = false
         pageCheck.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(pageCheck)
 
+        // Установка constraints для PageControl
         NSLayoutConstraint.activate([
             pageCheck.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             pageCheck.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -168)
         ])
     }
 
+    // MARK: - Private Methods
     private func finish() {
         UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
         dismiss(animated: true) { [weak self] in self?.onFinishTap?() }

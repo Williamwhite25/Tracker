@@ -1,9 +1,13 @@
 import UIKit
 
 final class CategoriesViewController: UIViewController {
+    
+    // MARK: - Private Properties
     private let viewModel = CategoryListViewModel()
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
-
+    
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -11,6 +15,8 @@ final class CategoriesViewController: UIViewController {
         viewModel.loadCategories()
     }
 
+    
+    // MARK: - Private Methods
     private func setupUI() {
         title = "Категории"
         view.backgroundColor = .systemBackground
@@ -40,6 +46,7 @@ final class CategoriesViewController: UIViewController {
     }
 }
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
 extension CategoriesViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.categories.count

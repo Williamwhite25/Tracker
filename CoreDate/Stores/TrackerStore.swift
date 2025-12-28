@@ -64,7 +64,7 @@ extension TrackerStore {
         let categoryStore = CoreDataMain.shared.trackerCategoryStore
         var category = categoryStore.fetchCategory(by: categoryTitle)
         if category == nil {
-            categoryStore.createCategory(name: categoryTitle)
+            categoryStore.addCategory(name: categoryTitle)
             category = categoryStore.fetchCategory(by: categoryTitle)
         }
         
@@ -160,7 +160,7 @@ extension TrackerStore {
         let categoryStore = TrackerCategoryStore()
         var category = categoryStore.fetchCategory(by: categoryTitle)
         if category == nil {
-            categoryStore.createCategory(name: categoryTitle)
+            categoryStore.addCategory(name: categoryTitle)
             category = categoryStore.fetchCategory(by: categoryTitle)
         }
         
