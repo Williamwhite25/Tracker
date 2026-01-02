@@ -57,7 +57,7 @@ extension TrackerRecordStore {
         
         // Проверяем, нет ли уже записи на эту дату
         if isCompleted(for: trackerId, date: date) {
-            return 
+            return
         }
         
         let record = TrackerRecordCoreData(context: managedObjectContext)

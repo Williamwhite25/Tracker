@@ -14,7 +14,7 @@ final class CoreDataMain {
         
         let descriptions = CoreDataStack.makeSQLiteStoreDescriptions(
             modelName: modelName,
-            configToFilename: [:] 
+            configToFilename: [:]
         )
         stack.configureStoreDescriptions(descriptions)
         
@@ -48,7 +48,7 @@ final class CoreDataMain {
     }()
     
     private(set) lazy var trackerCategoryStore: TrackerCategoryStore = {
-        return TrackerCategoryStore(managedObjectContext: stack.viewContext)
+        return TrackerCategoryStore(context: stack.viewContext)
     }()
     
     private(set) lazy var trackerRecordStore: TrackerRecordStore = {

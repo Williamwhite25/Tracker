@@ -214,6 +214,8 @@ class TrackerViewController: UIViewController {
     private let marginsBetweenCells: CGFloat = 10
     private var collectionTracker: CollectionTracker?
     
+    private var hasCheckedOnboarding = false
+    
     // Category must have `id: UUID`
     private var categories = [
         TrackerCategory(id: UUID(), name: "Домашний уют")
@@ -259,6 +261,24 @@ class TrackerViewController: UIViewController {
             bg.frame = collectionTracker!.collection.bounds
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+       
+        guard !hasCheckedOnboarding else { return }
+        hasCheckedOnboarding = true
+        
+        let hasSeenOnboarding = UserDefaults.standard.bool(forKey:
+        "hasSeenOnboarding")
+        guard !hasSeenOnboarding else { return }
+        
+        let onboardingViewController = OnboardingViewController()
+        onboardingViewController.modalPresentationStyle = .fullScreen
+        present(onboardingViewController, animated: false)
+    }
+    
+    
     
     private func fetchData() -> [Tracker] {
         (0..<1).compactMap { _ in randomTracker(categories: categories) }
