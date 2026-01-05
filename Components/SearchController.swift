@@ -21,7 +21,7 @@ final class SearchController: NSObject {
         controller.searchBar.delegate = presenter as? UISearchBarDelegate
 
         controller.hidesNavigationBarDuringPresentation = false
-        controller.searchBar.placeholder = "Поиск"
+        controller.searchBar.placeholder = NSLocalizedString("search.placeholder", comment: "")
     }
 
     func register() {

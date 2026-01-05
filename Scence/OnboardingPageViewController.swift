@@ -1,4 +1,3 @@
-
 import UIKit
 
 // MARK: - OnboardingPageViewController
@@ -44,7 +43,7 @@ final class OnboardingPageViewController: UIViewController {
         view.addSubview(titleLabel)
 
         // Настройка кнопки действия
-        actionButtonTap.setTitle("Вот это технологии!", for: .normal)
+        actionButtonTap.setTitle(NSLocalizedString("onboarding.button.start", comment: ""), for: .normal)
         actionButtonTap.backgroundColor = .ypBlack
         actionButtonTap.setTitleColor(.ypWhite, for: .normal)
         actionButtonTap.layer.cornerRadius = 16
@@ -81,4 +80,7 @@ final class OnboardingPageViewController: UIViewController {
         onStartTap?()
     }
 }
+
+
+
 

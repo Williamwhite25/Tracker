@@ -1,118 +1,47 @@
-//
-//  AppDelegate.swift
-//  Tracker
-//
-//  Created by William White on 02.11.2025.
-//
-
-
-
-
 import UIKit
 import CoreData
+import AppMetricaCore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
-
-    lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Model")
-
-        container.loadPersistentStores { storeDescription, error in
-            if let error = error as NSError? {
-                NSLog("Unresolved Core Data error: %@, %@", error, error.userInfo)
-            } else {
-                NSLog("Loaded persistent store: %@", storeDescription.url?.path ?? "<in-memory>")
-            }
-
-            // Настройки контекста после попытки загрузки store
-            container.viewContext.automaticallyMergesChangesFromParent = true
-            container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-            container.viewContext.undoManager = nil
-        }
-
-        return container
+    // MARK: - Store Properties
+    private(set) lazy var trackerCategoryStore: TrackerCategoryStore = {
+        TrackerCategoryStore(context: CoreDataManager.shared.viewContext)
+    }()
+    
+    private(set) lazy var trackerStore: TrackerStore = {
+        TrackerStore(context: CoreDataManager.shared.viewContext)
+    }()
+    
+    private(set) lazy var trackerRecordStore: TrackerRecordStore = {
+        TrackerRecordStore(context: CoreDataManager.shared.viewContext)
     }()
 
-    // Удобный метод для сохранения контекста (можно вызывать из любого места через (UIApplication.shared.delegate as? AppDelegate)?.saveContext() )
-    func saveContext(_ context: NSManagedObjectContext? = nil) {
-        let ctx = context ?? persistentContainer.viewContext
-        guard ctx.hasChanges else { return }
-        do {
-            try ctx.save()
-        } catch {
-            let nsError = error as NSError
-            NSLog("Failed to save Core Data context: %@, %@", nsError, nsError.userInfo)
-        }
-    }
-
-    func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-    ) -> Bool {
-        // Инициализация контейнера (при желании можно вызвать явно)
-        _ = persistentContainer
-        return true
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // 🔹 Инициализация AppMetrica
+            AnalyticsService.activate()
+            
+            print("AppMetrica configured with API key")
+            
+            let defaults = UserDefaults.standard
+            if !defaults.bool(forKey: "hasPreloadedData") {
+                defaults.set(true, forKey: "hasPreloadedData")
+            }
+            
+            return true
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        saveContext()
+        CoreDataManager.shared.saveContext()
     }
 
     // MARK: UISceneSession Lifecycle
 
-    func application(
-        _ application: UIApplication,
-        configurationForConnecting connectingSceneSession: UISceneSession,
-        options: UIScene.ConnectionOptions
-    ) -> UISceneConfiguration {
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) { }
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        CoreDataManager.shared.saveContext()
+    }
 }
-
-
-
-
-//import UIKit
-//import CoreData
-//
-//@main
-//class AppDelegate: UIResponder, UIApplicationDelegate {
-//    
-//    var window: UIWindow?
-//
-//
-//
-//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-//        return true
-//    }
-//
-//    // MARK: UISceneSession Lifecycle
-//
-//    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-//        
-//        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
-//    }
-//
-//    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-//        
-//    }
-//    
-//    lazy var persistentContainer: NSPersistentContainer = {
-//        let container = NSPersistentContainer(name: "Model")
-//        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-//            if let error = error as NSError? {
-//                
-//                NSLog("Unresolved Core Data error: %@, %@", error, error.userInfo)
-//
-//            } else {
-//                NSLog("Loaded persistent store: %@", storeDescription.url?.path ?? "<in-memory>")
-//            }
-//        })
-//        return container
-//    }()
-//
-//
-//}

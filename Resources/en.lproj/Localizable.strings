@@ -1,0 +1,188 @@
+/* Add button title */
+"add_button" = "Add";
+
+/* Add category button title */
+"add_category" = "Add Category";
+
+/* Cancel button title */
+"cancel_button" = "Cancel";
+
+/* Category name input placeholder */
+"category_name_placeholder" = "Enter category name";
+
+/* Category section title */
+"category_title" = "Category";
+
+/* Color selection section title */
+"color_section" = "Color";
+
+/* Create button title */
+"create_button" = "Create";
+
+/* Delete context menu action */
+"delete_action" = "Delete";
+
+/* Delete button in alert */
+"delete_button" = "Delete";
+
+/* Delete confirmation alert message */
+"delete_confirmation_message" = "";
+
+/* Delete confirmation alert title */
+"delete_confirmation_title" = "Is this category no longer needed?";
+
+/* Done button title */
+"done_button" = "Done";
+
+/* Edit context menu action */
+"edit_action" = "Edit";
+
+/* Edit category screen title */
+"edit_category" = "Edit Category";
+
+/* Emoji selection section title */
+"emoji_section" = "Emoji";
+
+/* Generic error message */
+"error_message" = "Error detected";
+
+/* Error alert title */
+"error_title" = "Error";
+
+/* Every day schedule option */
+"every_day" = "Every day";
+
+/* Friday full name */
+"friday" = "Friday";
+
+/* Cannot mark trackers for future dates */
+"future_date_error" = "Tracking for future dates is not allowed";
+
+/* Placeholder text about grouping habits and events */
+"habits_events_grouped" = "Habits and events can be grouped by meaning";
+
+/* Monday full name */
+"monday" = "Monday";
+
+/* Monday short name */
+"monday_short" = "Mon";
+
+/* New category screen title */
+"new_category" = "New category";
+
+/* New habit creation screen title */
+"new_habit_title" = "New habit";
+
+/* Empty state placeholder when no trackers */
+"no_trackers_placeholder" = "What will we track?";
+
+/* Days count format for pluralization */
+"number_of_days" = "%d days";
+
+/* Onboarding button title */
+"onboarding_button" = "That's technology!";
+
+/* First onboarding screen title */
+"onboarding_first_title" = "Track only\nwhat you want";
+
+/* Second onboarding screen title */
+"onboarding_second_title" = "Even if it's not\nliters of water and yoga";
+
+/* Saturday full name */
+"saturday" = "Saturday";
+
+/* Saturday short name */
+"saturday_short" = "Sat";
+
+/* Save button title */
+"save_button" = "Save";
+
+/* Schedule screen title */
+"schedule_screen_title" = "Schedule";
+
+/* Schedule section title */
+"schedule_title" = "Schedule";
+
+/* Search field placeholder */
+"search_placeholder" = "Search";
+
+/* Statistics tab title */
+"statistics_tab" = "Statistics";
+
+/* Sunday full name */
+"sunday" = "Sunday";
+
+/* Sunday short name */
+"sunday_short" = "Sun";
+
+/* Thursday full name */
+"thursday" = "Thursday";
+
+/* Thursday short name */
+"thursday_short" = "Thu";
+
+/* Tracker name input placeholder */
+"tracker_name_placeholder" = "Enter tracker name";
+
+/* Trackers tab title */
+"trackers_tab" = "Trackers";
+
+/* Main screen title with trackers list */
+"trackers_title" = "Trackers";
+
+/* Tuesday full name */
+"tuesday" = "Tuesday";
+
+/* Tuesday short name */
+"tuesday_short" = "Tue";
+
+/* Wednesday full name */
+"wednesday" = "Wednesday";
+
+/* Wednesday short name */
+"wednesday_short" = "Wed";
+
+/* Statistics screen title */
+"statistics_title" = "Statistics";
+
+/* Empty statistics placeholder */
+"no_statistics_placeholder" = "No statistics to analyze yet";
+
+/* Best period statistic title */
+"best_period" = "Best period";
+
+/* Perfect days statistic title */
+"perfect_days" = "Perfect days";
+
+/* Completed trackers statistic title */
+"completed_trackers" = "Trackers completed";
+
+/* Average value statistic title */
+"average_value" = "Average value";
+
+/* Delete tracker confirmation title */
+"delete_tracker_confirmation" = "Are you sure you want to delete this tracker?";
+
+/* Edit habit screen title */
+"edit_habit_title" = "Edit Habit";
+
+/* Filters screen title */
+"filters_title" = "Filters";
+
+/* Filters button title */
+"filters_button" = "Filters";
+
+/* All trackers filter option */
+"all_trackers_filter" = "All trackers";
+
+/* Today trackers filter option */
+"today_trackers_filter" = "Trackers for today";
+
+/* Completed trackers filter option */
+"completed_trackers_filter" = "Completed";
+
+/* Uncompleted trackers filter option */
+"uncompleted_trackers_filter" = "Uncompleted";
+
+/* Nothing found placeholder */
+"nothing_found" = "Nothing found";

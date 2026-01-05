@@ -20,14 +20,14 @@ final class OnboardingViewController: UIViewController, UIPageViewControllerData
 
         let pageOne = OnboardingPageViewController(
             imageName: "onBoardingOne",
-            title: "Отслеживайте только то, что хотите",
+            title: NSLocalizedString("onboarding.page1.title", comment: ""),
             firstButton: true
         )
         pageOne.onStartTap = { [weak self] in self?.finish() }
 
         let pageSecond = OnboardingPageViewController(
             imageName: "onBoardingSecond",
-            title: "Даже если это не литры воды и йога",
+            title: NSLocalizedString("onboarding.page2.title", comment: ""),
             firstButton: true
         )
         pageSecond.onStartTap = { [weak self] in self?.finish() }
