@@ -1,0 +1,191 @@
+/* Main screen title with trackers list */
+"trackers_title" = "Трекеры";
+
+/* Add button title */
+"add_button" = "Добавить";
+
+/* Cancel button title */
+"cancel_button" = "Отменить";
+
+/* Create button title */
+"create_button" = "Создать";
+
+/* Save button title */
+"save_button" = "Сохранить";
+
+/* Done button title */
+"done_button" = "Готово";
+
+/* Search field placeholder */
+"search_placeholder" = "Поиск";
+
+/* Empty state placeholder when no trackers */
+"no_trackers_placeholder" = "Что будем отслеживать?";
+
+/* Placeholder text about grouping habits and events */
+"habits_events_grouped" = "Привычки и события можно\nобъединить по смыслу";
+
+/* Category section title */
+"category_title" = "Категория";
+
+/* Schedule section title */
+"schedule_title" = "Расписание";
+
+/* Every day schedule option */
+"every_day" = "Каждый день";
+
+/* New category screen title */
+"new_category" = "Новая категория";
+
+/* Add category button title */
+"add_category" = "Добавить категорию";
+
+/* Category name input placeholder */
+"category_name_placeholder" = "Введите название категории";
+
+/* Edit category screen title */
+"edit_category" = "Редактирование категории";
+
+/* New habit creation screen title */
+"new_habit_title" = "Новая привычка";
+
+/* Tracker name input placeholder */
+"tracker_name_placeholder" = "Введите название трекера";
+
+/* Emoji selection section title */
+"emoji_section" = "Emoji";
+
+/* Color selection section title */
+"color_section" = "Цвет";
+
+/* Schedule screen title */
+"schedule_screen_title" = "Расписание";
+
+/* Monday full name */
+"monday" = "Понедельник";
+
+/* Tuesday full name */
+"tuesday" = "Вторник";
+
+/* Wednesday full name */
+"wednesday" = "Среда";
+
+/* Thursday full name */
+"thursday" = "Четверг";
+
+/* Friday full name */
+"friday" = "Пятница";
+
+/* Saturday full name */
+"saturday" = "Суббота";
+
+/* Sunday full name */
+"sunday" = "Воскресенье";
+
+/* Edit context menu action */
+"edit_action" = "Редактировать";
+
+/* Delete context menu action */
+"delete_action" = "Удалить";
+
+/* Delete confirmation alert title */
+"delete_confirmation_title" = "Эта категория точно не нужна?";
+
+/* Delete confirmation alert message */
+"delete_confirmation_message" = "";
+
+/* Delete button in alert */
+"delete_button" = "Удалить";
+
+/* Error alert title */
+"error_title" = "Ошибка";
+
+/* Generic error message */
+"error_message" = "Произошла ошибка";
+
+/* Trackers tab title */
+"trackers_tab" = "Трекеры";
+
+/* Statistics tab title */
+"statistics_tab" = "Статистика";
+
+/* Days count format for pluralization */
+"number_of_days" = "%d день";
+
+/* Cannot mark trackers for future dates */
+"future_date_error" = "Нельзя отмечать трекеры для будущих дат";
+
+/* Monday short name */
+"monday_short" = "Пн";
+
+/* Tuesday short name */
+"tuesday_short" = "Вт";
+
+/* Wednesday short name */
+"wednesday_short" = "Ср";
+
+/* Thursday short name */
+"thursday_short" = "Чт";
+
+/* Friday short name */
+"friday_short" = "Пт";
+
+/* Saturday short name */
+"saturday_short" = "Сб";
+
+/* Sunday short name */
+"sunday_short" = "Вс";
+
+/* Onboarding button title */
+"onboarding_button" = "Вот это технологии!";
+
+/* First onboarding screen title */
+"onboarding_first_title" = "Отслеживайте только\nто, что хотите";
+
+/* Second onboarding screen title */
+"onboarding_second_title" = "Даже если это\nне литры воды и йога";
+
+/* Statistics screen title */
+"statistics_title" = "Статистика";
+
+/* Empty statistics placeholder */
+"no_statistics_placeholder" = "Анализировать пока нечего";
+
+/* Best period statistic title */
+"best_period" = "Лучший период";
+
+/* Perfect days statistic title */
+"perfect_days" = "Идеальные дни";
+
+/* Completed trackers statistic title */
+"completed_trackers" = "Трекеров завершено";
+
+/* Average value statistic title */
+"average_value" = "Среднее значение";
+
+/* Delete tracker confirmation title */
+"delete_tracker_confirmation" = "Уверены, что хотите удалить трекер?";
+
+/* Edit habit screen title */
+"edit_habit_title" = "Редактирование привычки";
+
+/* Filters screen title */
+"filters_title" = "Фильтры";
+
+/* Filters button title */
+"filters_button" = "Фильтры";
+
+/* All trackers filter option */
+"all_trackers_filter" = "Все трекеры";
+
+/* Today trackers filter option */
+"today_trackers_filter" = "Трекеры на сегодня";
+
+/* Completed trackers filter option */
+"completed_trackers_filter" = "Завершенные";
+
+/* Uncompleted trackers filter option */
+"uncompleted_trackers_filter" = "Не завершенные";
+
+/* Nothing found placeholder */
+"nothing_found" = "Ничего не найдено";

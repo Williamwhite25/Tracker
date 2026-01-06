@@ -64,7 +64,7 @@ final class CollectionTracker: NSObject {
                 collection.trailingAnchor.constraint(equalTo: presenterVC.view.safeAreaLayoutGuide.trailingAnchor)
             ])
             
-            createEmptyDataView(message: "Что будем отслеживать?")
+            createEmptyDataView(message: NSLocalizedString("collectionTracker.emptyData.message", comment: ""))
         }
         
         return self

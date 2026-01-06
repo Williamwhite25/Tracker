@@ -1,76 +1,81 @@
-
-//  Created by William White on 03.11.2025.
-//
-
-
-import Foundation
 import UIKit
 
-// MARK: - TrackerTabsController
-class TrackerTabsController: UITabBarController {
-    // MARK: Lifecycle
+final class TrackerTabsController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        createNavigation([
-            TrackerViewController(),
-            StatisticViewController()
-        ])
-
-        configureNavigationBar()
+        setupTabBar()
+        addTabBarSeparator()
     }
-
-    // MARK: - Setup navigation controllers and tabs
-    private func createNavigation(_ navigationControllers: [UIViewController]) {
-        var tabs: [UINavigationController] = []
-
-        navigationControllers.forEach { navigation in
-            let navigationController = UINavigationController(rootViewController: navigation)
-            
-            if navigation.tabBarItem.title != nil && navigation.tabBarItem.image != nil {
-                navigationController.tabBarItem = navigation.tabBarItem
-                tabs.append(navigationController)
+    
+    private func setupTabBar() {
+        guard view.frame.size.height > 0, view.frame.size.width > 0 else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.setupTabBar()
             }
+            return
         }
-
-        viewControllers = tabs
-    }
-
-    // MARK: - Configure appearance of tab bar and navigation
-    private func configureNavigationBar() {
-        // Фоновый цвет экрана
-        view.backgroundColor = UIColor(named: "YPWhite")
-        // Цвет для выбранного таба
-        tabBar.tintColor = UIColor(named: "YPBlue")
-        // Цвет для невыбранных табов
-        tabBar.unselectedItemTintColor = UIColor(named: "YPGray")
-
-        // Шрифт заголовков табов
-        UITabBarItem.appearance().setTitleTextAttributes(
-            [.font: UIFont.systemFont(ofSize: 12)],
-            for: .normal
+        let trackersNavVC = UINavigationController(rootViewController: TrackersViewController())
+        let statisticsNavVC = UINavigationController(rootViewController: StatisticsViewController())
+        
+        trackersNavVC.tabBarItem = UITabBarItem(
+            title: Localizable.trackersTab,
+            image: UIImage(resource: .trackerLogo),
+            selectedImage: nil
         )
-
-        // Добавить тонкую линию над TabBar
-        addTopSeparator()
+        
+        statisticsNavVC.tabBarItem = UITabBarItem(
+                    title: Localizable.statisticsTab,
+                    image: UIImage(resource: .statisticLogo),
+                    selectedImage: nil
+                )
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 10, weight: .medium),
+            .kern: -0.24
+        ]
+        UITabBarItem.appearance().setTitleTextAttributes(attributes, for: .normal)
+        
+        viewControllers = [trackersNavVC, statisticsNavVC]
+        
+        tabBar.backgroundColor = .systemBackground
+        tabBar.tintColor = UIColor(resource: .ypBlue)
+        
+        DispatchQueue.main.async {
+            self.adjustTabBarHeight()
+        }
     }
-
-    private func addTopSeparator() {
+    
+    private func addTabBarSeparator() {
         let separator = UIView()
+        separator.backgroundColor = UIColor(resource: .ypGray)
         separator.translatesAutoresizingMaskIntoConstraints = false
-        // Можно использовать системный separator цвет или кастомный
-        separator.backgroundColor = UIColor.separator.withAlphaComponent(0.6)
-
         tabBar.addSubview(separator)
+        
         NSLayoutConstraint.activate([
+            separator.topAnchor.constraint(equalTo: tabBar.topAnchor),
             separator.leadingAnchor.constraint(equalTo: tabBar.leadingAnchor),
             separator.trailingAnchor.constraint(equalTo: tabBar.trailingAnchor),
-            separator.topAnchor.constraint(equalTo: tabBar.topAnchor),
-            separator.heightAnchor.constraint(equalToConstant: 0.5)
+            separator.heightAnchor.constraint(equalToConstant: 1)
         ])
     }
+    
+    private func adjustTabBarHeight() {
+        let newHeight: CGFloat = 84
+        guard newHeight > 0, view.frame.size.height > 0 else { return }
+        var newFrame = tabBar.frame
+        newFrame.size.height = newHeight
+        newFrame.origin.y = view.frame.size.height - newHeight
+        tabBar.frame = newFrame
+    }
+    
+    private var hasAdjustedTabBar = false
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if !hasAdjustedTabBar && view.frame.size.height > 0 {
+            adjustTabBarHeight()
+            hasAdjustedTabBar = true
+        }
+    }
 }
-
-
-
-

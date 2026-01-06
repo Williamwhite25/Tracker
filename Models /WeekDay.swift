@@ -1,51 +1,35 @@
 import Foundation
 
-enum WeekDay: Int, CaseIterable, Codable, Hashable {
-    case monday = 1, tuesday, wednesday, thursday, friday, saturday, sunday
-
-    var displayName: String {
+enum Weekday: Int, CaseIterable, Codable {
+    case monday = 2
+    case tuesday = 3
+    case wednesday = 4
+    case thursday = 5
+    case friday = 6
+    case saturday = 7
+    case sunday = 1
+    
+    var localizedName: String {
         switch self {
-        case .monday:    return "Понедельник"
-        case .tuesday:   return "Вторник"
-        case .wednesday: return "Среда"
-        case .thursday:  return "Четверг"
-        case .friday:    return "Пятница"
-        case .saturday:  return "Суббота"
-        case .sunday:    return "Воскресенье"
+        case .monday: return Localizable.monday
+        case .tuesday: return Localizable.tuesday
+        case .wednesday: return Localizable.wednesday
+        case .thursday: return Localizable.thursday
+        case .friday: return Localizable.friday
+        case .saturday: return Localizable.saturday
+        case .sunday: return Localizable.sunday
         }
     }
     
     var shortName: String {
         switch self {
-        case .monday:    return "Пн"
-        case .tuesday:   return "Вт"
-        case .wednesday: return "Ср"
-        case .thursday:  return "Чт"
-        case .friday:    return "Пт"
-        case .saturday:  return "Сб"
-        case .sunday:    return "Вс"
-        }
-    }
-    
-    var index: Int { Self.allCases.firstIndex(of: self) ?? 0 }
-    
-    init?(calendarWeekday: Int) {
-        switch calendarWeekday {
-        case 2: self = .monday
-        case 3: self = .tuesday
-        case 4: self = .wednesday
-        case 5: self = .thursday
-        case 6: self = .friday
-        case 7: self = .saturday
-        case 1: self = .sunday
-        default: return nil
+        case .monday: return Localizable.mondayShort
+        case .tuesday: return Localizable.tuesdayShort
+        case .wednesday: return Localizable.wednesdayShort
+        case .thursday: return Localizable.thursdayShort
+        case .friday: return Localizable.fridayShort
+        case .saturday: return Localizable.saturdayShort
+        case .sunday: return Localizable.sundayShort
         }
     }
 }
-
-
-
-
-
-
-
